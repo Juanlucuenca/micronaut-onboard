@@ -1,7 +1,9 @@
-package com.example;
+package com.example.controller;
 
 import java.util.Optional;
 
+import com.example.persistence.repository.BookRepository;
+import com.example.persistence.model.BookEntity;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Delete;

@@ -1,4 +1,4 @@
-package com.example;
+package com.example.persistence.model;
 
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.data.annotation.GeneratedValue;
