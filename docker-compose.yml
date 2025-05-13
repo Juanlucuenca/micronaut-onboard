@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16.2
+    container_name: postgres_db
+    environment:
+      - POSTGRES_DB=book-store
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - keycloak_network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0.6
+    container_name: keycloak_auth
+    command: start-dev
+    environment:
+      # Conexión a Postgres dentro de la misma red de Docker
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://postgres:5432/book-store
+      - KC_DB_USERNAME=postgres
+      - KC_DB_PASSWORD=postgres
+
+      # Credenciales de administrador
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+
+      # Ajustes de arranque en HTTP (dev)
+      - KC_HTTP_ENABLED=true
+      - KC_HOSTNAME=localhost
+      - KC_HOSTNAME_PORT=8080
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KC_HEALTH_ENABLED=true
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - keycloak_network
+
+volumes:
+  postgres_data:
+
+networks:
+  keycloak_network:
+    driver: bridge

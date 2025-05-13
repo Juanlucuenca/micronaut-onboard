@@ -1,5 +1,6 @@
 package com.example.persistence.model;
 
+import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;
@@ -25,5 +26,6 @@ public class BookEntity {
   private String title;
 
   // Podemos usar @Nullable para indicar que el campo es opcional
-  @Nullable private String author;
+  @Nullable 
+  private String author;
 }

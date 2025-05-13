@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.example.service.BookService;
 import com.example.persistence.model.BookEntity;
-
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
@@ -19,22 +18,21 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
-import io.micronaut.views.View;
 
 @Controller("/books")
 @AllArgsConstructor
+@Secured(SecurityRule.IS_ANONYMOUS)  // o "isAuthenticated()"
 public class BookController {
 
   private final BookService bookService;
 
-  @Secured(SecurityRule.IS_ANONYMOUS)
-  @View("home")
   @Get()
   public Iterable<BookEntity> getBooks() {
     return bookService.findAll();
   }
 
   @Post()
+  @Secured(SecurityRule.IS_AUTHENTICATED)  // excepción: este método es público
   public HttpResponse<BookEntity> createBook(@Body @Valid BookEntity book) {
     return HttpResponse.created(bookService.save(book));
   }
@@ -47,6 +45,7 @@ public class BookController {
   }
 
   @Put("/{id}")
+  @Secured(SecurityRule.IS_AUTHENTICATED)  // excepción: este método es público
   public HttpResponse<?> updateBook(@PathVariable Long id, @Body @Valid BookEntity book) {
     if (bookService.findById(id).isEmpty()) {
       return HttpResponse.notFound();
@@ -57,6 +56,7 @@ public class BookController {
   }
 
   @Delete("/{id}")
+  @Secured(SecurityRule.IS_AUTHENTICATED)  // excepción: este método es público
   public HttpResponse<?> deleteBook(@PathVariable Long id) {
     if (bookService.findById(id).isEmpty()) {
       return HttpResponse.notFound();
