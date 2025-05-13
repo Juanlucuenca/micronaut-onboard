@@ -17,6 +17,9 @@ import io.micronaut.http.annotation.QueryValue;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
+import io.micronaut.views.View;
 
 @Controller("/books")
 @AllArgsConstructor
@@ -24,6 +27,8 @@ public class BookController {
 
   private final BookService bookService;
 
+  @Secured(SecurityRule.IS_ANONYMOUS)
+  @View("home")
   @Get()
   public Iterable<BookEntity> getBooks() {
     return bookService.findAll();
