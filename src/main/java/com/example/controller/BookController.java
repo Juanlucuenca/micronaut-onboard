@@ -1,9 +1,6 @@
 package com.example.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import com.example.service.BookService;
 import com.example.persistence.model.BookEntity;
 import io.micronaut.http.HttpResponse;
@@ -20,7 +17,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
-import io.micronaut.views.View;
 
 @Controller("/books")
 @AllArgsConstructor
