@@ -1,6 +1,8 @@
 package com.example.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.example.service.BookService;
 import com.example.persistence.model.BookEntity;
@@ -18,10 +20,11 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
+import io.micronaut.views.View;
 
 @Controller("/books")
 @AllArgsConstructor
-@Secured(SecurityRule.IS_ANONYMOUS)  // o "isAuthenticated()"
+@Secured(SecurityRule.IS_ANONYMOUS)
 public class BookController {
 
   private final BookService bookService;

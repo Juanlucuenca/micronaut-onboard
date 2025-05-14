@@ -1,0 +1,50 @@
+#tag::port[]
+micronaut:
+  server:
+    port: 8081
+#end::port[]
+---
+#tag::oauth2[]
+micronaut:
+  security:
+    intercept-url-map:
+      - pattern: /swagger-ui/**
+        http-method: GET
+        access: isAnonymous()
+      - pattern: /swagger/**
+        http-method: GET
+        access: isAnonymous()
+      - pattern: /**
+        access: isAnonymous()
+    enabled: true
+    authentication: bearer # <1>
+    token:
+      jwt:
+        enabled: true
+        signatures:
+          jwks:
+            keycloak:
+              url: 'http://localhost:8080/realms/myrealm/protocol/openid-connect/certs'
+          
+    oauth2:
+      clients:
+        keycloak: # <2>
+          grant-type: password
+          client-secret: 'mrDzkx2yaJciY1eNock4miG9VzH3Koyk' # <3>
+          client-id: 'realmtest' # <4>
+          authorization:
+            url: 'http://localhost:8080/realms/myrealm/protocol/openid-connect/auth'  
+    endpoints:
+      logout:
+        get-allowed: true # <6>
+
+datasources:
+  default:
+    db-type: postgres
+    dialect: POSTGRES
+    schema-generate: CREATE_DROP
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/book-store
+    username: postgres
+    password: postgres
+#end::oauth2[]
