@@ -2,6 +2,14 @@
 micronaut:
   server:
     port: 8081
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
 #end::port[]
 ---
 #tag::oauth2[]
@@ -17,7 +25,7 @@ micronaut:
       - pattern: /**
         access: isAnonymous()
     enabled: true
-    authentication: bearer # <1>
+    authentication: bearer
     token:
       jwt:
         enabled: true
@@ -25,18 +33,20 @@ micronaut:
           jwks:
             keycloak:
               url: 'http://localhost:8080/realms/myrealm/protocol/openid-connect/certs'
-          
     oauth2:
       clients:
-        keycloak: # <2>
+        keycloak:
           grant-type: password
-          client-secret: 'mrDzkx2yaJciY1eNock4miG9VzH3Koyk' # <3>
-          client-id: 'realmtest' # <4>
+          client-secret: 'R1QNUg2kXQ5S4OBOK0AW7ccg5g1N4YSP'
+          client-id: 'realmtest'
           authorization:
-            url: 'http://localhost:8080/realms/myrealm/protocol/openid-connect/auth'  
+            url: 'http://localhost:8080/realms/myrealm/protocol/openid-connect/auth'
     endpoints:
       logout:
-        get-allowed: true # <6>
+        get-allowed: true
+  openapi:
+    views:
+      spec: swagger-ui.enabled=true,swagger-ui.theme=flattop
 
 datasources:
   default:

@@ -17,7 +17,18 @@ public interface BookRepository extends CrudRepository<BookEntity, Long> {
   // con el nombre de un metodo
  Optional<BookEntity> findByTitle(String title);
 
- // Podemos usar @Query para especificar una consulta SQL
- @Query("SELECT * FROM book WHERE author = :author")
- List<BookEntity> findByAuthor(String author);
+ // Métodos para trabajar con la relación Author
+ List<BookEntity> findByAuthorId(Long authorId);
+
+ @Query("SELECT b.* FROM book b JOIN author a ON b.author_id = a.id WHERE a.name = :authorName")
+ List<BookEntity> findByAuthorEntityName(String authorName);
+
+ @Query("SELECT COUNT(*) FROM book WHERE author_id = :authorId")
+ Long countByAuthorId(Long authorId);
+
+ @Query("SELECT b.* FROM book b WHERE b.author_id IS NOT NULL")
+ List<BookEntity> findBooksWithAuthor();
+
+ @Query("SELECT b.* FROM book b WHERE b.author_id IS NULL")
+ List<BookEntity> findBooksWithoutAuthor();
 }
